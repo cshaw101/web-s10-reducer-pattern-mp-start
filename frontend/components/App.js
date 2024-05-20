@@ -1,4 +1,4 @@
-import React from 'react' // 👈 you'll need the reducer hook
+import React, { useReducer } from 'react' // 👈 you'll need the reducer hook
 import Quotes from './Quotes'
 import QuoteForm from './QuoteForm'
 
@@ -33,17 +33,59 @@ const quotes = [
 ]
 
 // 👇 create your initial state object here
-
+const initialState = {quotes};
 const reducer = (state, action) => {
   // 👇 implement your reducer here using the action types above
+  switch (action.type) {
+    case CREATE_QUOTE:
+      return {
+        ...state,
+        quotes: [...state.quotes, action.payload],
+      };
+    case DELETE_QUOTE:
+      return {
+        ...state,
+        quotes: state.quotes.filter(quote => quote.id !== action.payload),
+      };
+    case EDIT_QUOTE_AUTHENTICITY:
+      return {
+        ...state,
+        quotes: state.quotes.map(quote =>
+          quote.id === action.payload ? {...quote, apocryphal: !quote.apocryphal}
+          : quote)
+      };
+    case SET_HIGHLIGHTED_QUOTE:
+      return {
+        ...state,
+        highlightedQuote:action.payload,
+      };
+      case TOGGLE_VISIBILITY:
+      return {
+        ...state,
+        displayAllQuotes: !state.displayAllQuotes,
+      };
+    default:
+      return state;
+  } 
 }
 
 export default function App() {
   // 👇 use the reducer hook to spin up state and dispatch
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const createQuote = ({ authorName, quoteText }) => {
     // 👇 use the helper function above to create a new quote
     // 👇 and dispatch it over to the reducer
+    const newId = getNextId();
+
+    const newQuote = {
+      id: newId,
+      authorName,
+      quoteText,
+      apocryphal:false,
+    }
+    dispatch({ type: CREATE_QUOTE, payload: newQuote })
+
   }
   const deleteQuote = id => {
     // 👇 implement
