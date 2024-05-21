@@ -89,15 +89,19 @@ export default function App() {
   }
   const deleteQuote = id => {
     // 👇 implement
+    dispatch({ type: DELETE_QUOTE, payload: id })
   }
   const editQuoteAuthenticity = id => {
     // 👇 implement
+    dispatch({ type: EDIT_QUOTE_AUTHENTICITY, payload: id });
   }
   const setHighlightedQuote = id => {
     // 👇 implement
+     dispatch({ type: SET_HIGHLIGHTED_QUOTE, payload: id });
   }
   const toggleVisibility = () => {
     // 👇 implement
+    dispatch({ type: TOGGLE_VISIBILITY });
   }
 
   return (
@@ -105,6 +109,12 @@ export default function App() {
       <h2>Module Project</h2>
       <Quotes
         quotes={quotes}
+        deleteQuote={deleteQuote} 
+        editQuoteAuthenticity={editQuoteAuthenticity} 
+        setHighlightedQuote={setHighlightedQuote} 
+        toggleVisibility={toggleVisibility} 
+        highlightedQuote={state.highlightedQuote} 
+        displayAllQuotes={state.displayAllQuotes} 
       // 👇 lots of props are missing! Check the Quotes component
 
       />
